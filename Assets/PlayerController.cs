@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    Animator animator;
+
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float jumpHeight = 1.5f;
@@ -17,10 +19,14 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector3 velocity;
     private float xRotation = 0f;
-
+    private Vector3 lastPos;
     void Start()
     {
+        
+        lastPos = new Vector3(transform.position.x, 0f, transform.position.z);
         controller = GetComponent<CharacterController>();
+
+        animator = GetComponent<Animator>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -28,19 +34,29 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+     
+        float speed = Vector3.Distance(transform.position, lastPos) / Time.deltaTime;
+        animator.SetFloat("HorisontalSpeed", speed);     
+        lastPos = transform.position;
         Move();
         Look();
+
+        
     }
+
+   
 
     void Move()
     {
+        
+
         bool isGrounded = controller.isGrounded;
 
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
-
+        
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
@@ -51,6 +67,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            animator.Play("jumpp");
         }
 
         velocity.y += gravity * Time.deltaTime;
