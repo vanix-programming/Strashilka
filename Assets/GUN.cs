@@ -5,8 +5,8 @@ public class GUN : MonoBehaviour
     [Header("Bullet Settings")]
     [SerializeField] private GameObject bulletPref;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float bulletSpid = 30f;
-    [SerializeField] private float bulletLifeTIME = 5f;
+    [SerializeField] private float bulletSpid = 1f;
+    [SerializeField] private float bulletLifeTIME = 3f;
 
     [SerializeField] private float fireRate = 0.15f;
 
